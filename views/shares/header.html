@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>{{title}}</title>
+  <base href="/">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <!--重置样式  -->
+  <link rel="stylesheet " type="text/css " href="css/reset.css " />
+  <link href="libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <!--自定义样式  -->
+  <link rel="stylesheet " type="text/css " href="css/style.css " />
+  <script src='libs/jquery/jquery.js'></script>
+  <script src="libs/bootstrap/js/bootstrap.js"></script>
+  <!--公用文件  -->
+  <script src='js/public.js'></script>
+  {{if src}}
+  <!--私有样式  -->
+  <script src="{{src}}"></script>
+  {{/if}}
+</head>
+
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a href="#" class="navbar-brand">信息管理系统</a>
+    </div>
+    <div id="navbar" class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="#">首页</a></li>
+        <li class="active"><a href="#">信息管理</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<header>
+  <div class="container">
+    <h1>{{title}}</h1>
+  </div>
+</header>

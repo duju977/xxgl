@@ -1,0 +1,180 @@
+{{include "./shares/header.html"}}
+<div class="container toolbar">
+  <button class="btn btn-success" onclick="location.href='add'">添加</button>
+  <button class="btn btn-warning" data-toggle="modal" data-target="#searchModal">
+    <span class="glyphicon glyphicon-search"></span> 搜索
+  </button>
+  <button class="btn btn-success" onclick="location.href='removeAll'">批量删除</button>
+</div>
+<div class="container data">
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <tbody>
+        <tr>
+          <th class="text-center">
+            <span class="input-group" >
+        <input type="checkbox" >
+      </span>
+          </th>
+          <th>姓名</th>
+          <th class="text-center">性别</th>
+          <th class="text-center">年龄</th>
+          <th class="text-center">手机号</th>
+          <th>电子邮箱</th>
+          <th class="text-center">修改</th>
+          <th class="text-center">删除</th>
+        </tr>
+        {{each students student}}
+        <tr>
+          <td>  <span class="input-group" >
+        <input type="checkbox" >
+      </span></td>
+          <td>{{student.name}}</td>
+          <td class="text-center">{{student.sex}}</td>
+          <td class="text-center">{{student.age}}</td>
+          <td class="text-center">{{student.phone}}</td>
+          <td>{{student.email}}</td>
+          <td class="text-center">
+            <span class="glyphicon glyphicon-edit" onclick="location.href='/edit/{{student._id}}'"></span>
+          </td>
+          <td class="text-center">
+            <span class="glyphicon glyphicon-trash" onclick="removeStudent('{{student._id}}', '{{student.name}}')"></span>
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+  <nav>
+   <ul class="pagination">
+            {{if page <2}} 
+            <li class="disabled">
+                <a href="?{{urlParams}}page={{page}}">上一页</a> {{else}}
+                <li>
+                    <a href="?{{urlParams}}page={{page-1}}">上一页</a> {{/if}}
+
+                </li>
+                {{each pageArray p}}
+                 {{if page ==p}}
+                <li class="active">
+                    {{else}}
+                    <li>
+                      {{/if}}
+                    <a href="?{{urlParams}}page={{p}}">{{p}}</a>
+                   
+                  
+                </li>
+                {{/each}} {{if page >= pageCount}}
+                <li class="disabled">
+                    <a href="?{{urlParams}}page={{page}}">下一页</a> {{else}}
+                    <li>
+                        <a href="?{{urlParams}}page={{page+1}}">下一页</a> {{/if}}
+                    </li>
+        </ul>
+
+  </nav>
+
+</div>
+
+
+
+<!-- 删除确认模态框 -->
+<div class="modal fade" id="removeModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+        <h4 class="modal-title">确认要删除吗？</h4>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger">　确定　</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">　取消　</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 搜索模态框 -->
+<div class="modal fade" id="searchModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span>×</span></button>
+        <h4 class="modal-title">学生信息搜索</h4>
+      </div>
+      <form class="form-horizontal" method="GET" action="/" id="search-form">
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label for="name" class="col-sm-3 control-label">姓名：</label>
+            <div class="col-sm-4">
+              <input id="name" name="name" class="form-control" placeholder="学生姓名" type="text">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="none" class="col-sm-3 control-label">性别：</label>
+            <div class="col-sm-4">
+              <label class="radio-inline">
+                <input name="isMale" id="none" value="" checked="" type="radio"> 不限
+              </label>
+              <label class="radio-inline">
+                <input name="isMale" id="male" value="true" type="radio"> 男
+              </label>
+              <label class="radio-inline">
+                <input name="isMale" id="female" value="false" type="radio"> 女
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="phone" class="col-sm-3 control-label">手机：</label>
+            <div class="col-sm-4">
+              <input id="phone" name="phone" class="form-control" placeholder="手机号" type="text">
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default">　关闭　</button>
+          <button type="submit" class="btn btn-success">　搜索　</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{{include "./shares/footer.html"}}
+<script>
+  // 搜索
+  $("#search-form").submit(function (ev) {
+    ev.preventDefault();
+    var paramsArr = $(this).serializeArray()
+    var params = []
+
+    paramsArr.forEach((ele) => {
+      if (ele.value.trim() != "") {
+        params.push(`${ele.name}=${ele.value}`)
+      }
+    })
+    location.href = "/?" + params.join('&');
+
+  })
+// 删除
+    function removeStudent(id,name){
+        // 删除学生信息
+        $.post("/api/del",{id,name})
+        // done 成功 相当于 .then
+        .done(function(res){
+        // console.log(res);
+        $("#message").find(".modal-body").html(res.message)
+        .end().modal("show")
+        .on("hidden.bs.modal",function(){
+            location.reload()
+        })
+        })
+        // fail 失败 .catch
+        .fail(function(err){
+           console.log(err);
+        })
+          
+    }
+
+</script>

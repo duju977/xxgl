@@ -1,0 +1,49 @@
+@charset "utf-8";
+html{
+  font-size: 12px;
+}
+body {
+    padding-top: 50px;
+}
+
+header {
+    background-color: #eee;
+    height: 6rem;
+}
+
+header h1 {
+    font-size: 2.2rem;
+}
+
+.toolbar {
+    padding: 10px 15px;
+}
+
+th {
+    background-color: #eee;
+    font-weight: normal;
+}
+
+#myModal .control-label {
+    text-align: left;
+}
+
+.glyphicon {
+    cursor: pointer;
+}
+
+.table {
+    margin-bottom: 0;
+}
+
+.pager a {
+    cursor: pointer;
+}
+
+.form-horizontal {
+    margin-top: 15px;
+}
+
+.form-horizontal .control-label {
+    text-align: left;
+}
